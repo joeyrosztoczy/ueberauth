@@ -243,13 +243,19 @@ defmodule Ueberauth do
 
   @doc false
   def call(conn, routes) do
+    IO.inspect("IN DEP:")
+    IO.inspect(conn)
     route_prefix = Path.join(["/" | conn.script_name])
     route_path = Path.relative_to(conn.request_path, route_prefix)
     route_key = {"/" <> route_path, conn.method}
 
     case List.keyfind(routes, route_key, 0) do
-      {_, route_mfa} -> run(conn, route_mfa)
-      _ -> conn
+      {_, route_mfa} ->
+        IO.inspect(route_mfa)
+        run(conn, route_mfa)
+
+      _ ->
+        conn
     end
   end
 
